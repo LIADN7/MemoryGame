@@ -157,11 +157,11 @@ function buildStart() {
         // Create the main sound one time
         mainSound = managerScene.getMainSounds();
         mainSound.play();
-        managerScene.time.delayedCall(8000, playSoundRec, [], managerScene); // Repeats every 80 seconds
+        managerScene.time.delayedCall(80000, playSoundRec, [], managerScene); // Repeats every 80 seconds
         //console.log(1111);
     }
     else
-        playSoundRec(); // Repeats every 80 seconds
+        playSoundRec(); // If restart
 }
 //-----------------------------------------------------
 /**
@@ -306,7 +306,7 @@ function playSoundRec() {
     mainSound.stop();
     mainSound.play();
     console.log(1111);
-    managerScene.time.delayedCall(8000, function rePlay() {
+    managerScene.time.delayedCall(80000, function rePlay() {
         playSoundRec();
     }, [], managerScene);
     console.log(1111);
