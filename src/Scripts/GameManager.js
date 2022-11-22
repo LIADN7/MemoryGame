@@ -26,7 +26,7 @@ class GameManager {
         managerScene = i_Scene;
         managerScene.scale;
         buildStart();
-        // tip push
+        // Tip push
         managerScene.getTipSymbol().on('pointerdown', function (pointer) {
             if (!isPause && !useTip && !gameOver && managerScene.getTimeLimitText().text != "0" && managerScene.getTimeLimitText().text != "-1" && limit > 1 && score < board.length - 2) {
                 var tipArr = getTip();
@@ -49,7 +49,6 @@ class GameManager {
         managerScene.getRestartSymbol().on('pointerdown', function (pointer) {
             managerScene.scene.restart();
         });
-        // console.log(board);
         // cards push from sym0 to sym11
         for (let i = 0; i < symArr.length; i++) {
             symArr[i].on('pointerdown', function (pointer) {
@@ -65,15 +64,15 @@ class GameManager {
                         // When you pick 2 correct cards, 
                         // check if: is the seconed card & the same card but not same position
                         symArr[i].setTexture("symbols", board[i].toString());
-                        //symArr[i].setTexture('transfer').setScale(0.24,0.24);
                         board[lastOpen] = "none";
                         board[i] = "none";
                         score += 2;
                         if (score == board.length) {
+                            // Win the game
                             gameOver = true;
                             managerScene.getFeedbackText().setText("You Won!");
-                            setWinScore(managerScene.timerGame);
-                            managerScene.timeLimit = 0; //set to won!
+                            setWinScore(managerScene.timerGame); // Set win score to leaderboard if need
+                            managerScene.timeLimit = 0; // Set to won!
                         }
                         else {
                             var j = lastOpen;
@@ -82,11 +81,13 @@ class GameManager {
                             symArr[i].tint = GREEN;
                             symArr[lastOpen].tint = GREEN;
                             isPause = true;
-                            let tempRand = [-1, -1];
+                            let tempRand = [-1, -1]; // 2 random cards
                             if (score < board.length - 2) {
+                                // Change 2 random cards
                                 tempRand = relocationCard();
                             }
                             managerScene.time.delayedCall(2000, function clean() {
+                                // Private function back to normal
                                 isPause = false;
                                 managerScene.getFeedbackText().setText("");
                                 symArr[i].tint = NORMAL; //normal
@@ -108,7 +109,7 @@ class GameManager {
                         limit--;
                         managerScene.getLimitText().setText("Turns left: " + limit);
                         if (limit == 0) {
-                            // gameOver 
+                            // Game Over 
                             gameOver = true;
                             managerScene.getFeedbackText().setText("Game Over");
                             managerScene.timeLimit = -1; //set to game over!
@@ -166,7 +167,7 @@ function buildStart() {
 //-----------------------------------------------------
 /**
  * When 2 different cards were selected,
- * Waits 2 seconds and returns back
+ * Waits 2 seconds and returns back to normal
  */
 function wrongEvent() {
     for (let j = 0; j < symArr.length; j++) {
@@ -188,9 +189,11 @@ function getRandText(isGood) {
     var len;
     let words;
     if (isGood) {
+        // Array of good words
         words = ["Nice", "Very good", "Excellent"];
     }
     else {
+        // Array of bad words
         words = ["Try again", "Wrong", "Try to remember"];
     }
     len = words.length;
@@ -207,27 +210,30 @@ function getBoard(n, m, numCards) {
     if (Math.floor((n * m) % 2) != 0)
         return [];
     let board = [];
-    var mn = n * m;
+    var mn = n * m; // Length board
     let numOfOrder = 0;
-    let i = 2;
+    let i = 2; // Symbol number in floor(i/2)
     for (let i = 0; i < mn; i++) {
+        // new array = ""
         board[i] = "symbol_0.png";
     }
     while (numOfOrder < (m * n)) {
+        // While not all the cards are selected
         var rand = Math.floor(Math.random() * mn);
         while (board[rand] != "symbol_0.png" || rand >= mn) {
+            // While the card not select rand++ [mod len]
             if (rand >= mn)
                 rand = 0;
             else
                 rand++;
         }
-        if (board[rand] == "symbol_0.png") {
-            board[rand] = "symbol_" + Math.floor(i / 2) + ".png";
-            i++;
-            numOfOrder++;
-            if (numCards + 1 == Math.floor(i / 2))
-                i = 2;
-        }
+        //if(board[rand]=="symbol_0.png"){
+        board[rand] = "symbol_" + Math.floor(i / 2) + ".png";
+        i++;
+        numOfOrder++;
+        if (numCards + 1 == Math.floor(i / 2))
+            i = 2;
+        //}
     }
     return board;
 }
@@ -239,6 +245,7 @@ function relocationCard() {
     var n = board.length;
     var rand1 = Math.floor(Math.random() * n);
     while (rand1 >= 12 || board[rand1] == "none") {
+        // Between 0 to len and not open card
         if (rand1 >= n)
             rand1 = 0;
         else
@@ -246,6 +253,7 @@ function relocationCard() {
     }
     var rand2 = Math.floor(Math.random() * n);
     while (rand2 == rand1 || rand2 >= 12 || board[rand2] == "none") {
+        // Not same cards, between 0 to len and not open card
         if (rand2 >= n)
             rand2 = 0;
         else
@@ -254,7 +262,7 @@ function relocationCard() {
     var temp = board[rand2];
     board[rand2] = board[rand1];
     board[rand1] = temp;
-    symArr[rand1].setTexture('transfer').setScale(0.24, 0.24);
+    symArr[rand1].setTexture('transfer').setScale(0.24, 0.24); // 2 transfer imgs
     symArr[rand2].setTexture('transfer').setScale(0.24, 0.24);
     return [rand1, rand2];
 }
@@ -305,9 +313,7 @@ function setWinScore(timeS) {
 function playSoundRec() {
     mainSound.stop();
     mainSound.play();
-    console.log(1111);
     managerScene.time.delayedCall(80000, function rePlay() {
         playSoundRec();
     }, [], managerScene);
-    console.log(1111);
 }
