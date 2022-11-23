@@ -264,13 +264,10 @@ function getBoard( n: number, m: number, numCards: number): String[] {
             if(rand>=mn) rand=0;
             else rand++;
         }
-        //if(board[rand]=="symbol_0.png"){
-
         board[rand]="symbol_"+Math.floor(i/2)+".png";
         i++;
         numOfOrder++;
         if(numCards+1==Math.floor(i/2)) i=2;
-        //}
     }
 
     return board;

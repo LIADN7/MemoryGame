@@ -227,13 +227,11 @@ function getBoard(n, m, numCards) {
             else
                 rand++;
         }
-        //if(board[rand]=="symbol_0.png"){
         board[rand] = "symbol_" + Math.floor(i / 2) + ".png";
         i++;
         numOfOrder++;
         if (numCards + 1 == Math.floor(i / 2))
             i = 2;
-        //}
     }
     return board;
 }
