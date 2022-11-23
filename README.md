@@ -28,6 +28,10 @@ The game over when:
 
 ![](https://github.com/LIADN7/MemoryGame/blob/main/Assets/img/gamePlay.gif)
 
+## To play on the web
+
+**[LINK](https://liadn7.itch.io/memory-game)**
+
 ## To run in localhost
 
     git clone https://github.com/LIADN7/MemoryGame.git
